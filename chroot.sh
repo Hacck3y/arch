@@ -23,18 +23,17 @@ cat >/etc/hosts <<EOF
 127.0.1.1 arch.localdomain arch
 EOF
 
-echo
-echo "ROOT PASSWORD"
-passwd
+ROOT_PASS="root"
+USER_PASS="rohit"
 
-useradd -m \
--G wheel,audio,video,storage,docker \
+echo "root:$ROOT_PASS" | chpasswd
+
+useradd -m -G wheel,audio,video,storage,docker \
 -s /bin/bash \
-$USERNAME
+$USERNAME || true
 
-echo
-echo "USER PASSWORD"
-passwd $USERNAME
+echo "$USERNAME:$USER_PASS" | chpasswd
+
 
 echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
